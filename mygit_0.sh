@@ -11,7 +11,7 @@ git init
 git add README.md
 git commit -m "Init Commit"
 git remote add origin https://github.com/HCarlos/RestFullAPISIAC.git
-git push -u origin master
+git push -u origin main
 
 echo "" > .gitignore
 git add .gitignore
@@ -24,7 +24,7 @@ git config --global color.ui true
 git config core.fileMode false
 git config --global push.default simple
 
-git checkout master
+git checkout main
 
 git status
 
@@ -32,6 +32,6 @@ git add .
 
 git commit -m "Init Commit"
 
-git push -u origin master --force
+git push -u origin main --force
 
 exit
