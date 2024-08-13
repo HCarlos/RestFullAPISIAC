@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from Home.models import Empleado, Marca, UnidadAdministrativa, Area, Equipo
 
-# User serial
+# User serial #
 class UserSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
     short_name = serializers.SerializerMethodField('get_short_name')
