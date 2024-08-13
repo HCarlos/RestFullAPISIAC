@@ -1,0 +1,13 @@
+[
+{"pk": "1","model": "Home.Area","fields":{"area":"COORDINACIÓN DE MODERNIZACIÓN E INNOVACIÓN"}},
+{"pk": "2","model": "Home.Area","fields":{"area":"ATENCIÓN CIUDADANA"}},
+{"pk": "3","model": "Home.Area","fields":{"area":"COORDINACIÓN DE LIMPIA Y RECOLECCIÓN DE RESIDUOS SOLIDOS"}},
+{"pk": "4","model": "Home.Area","fields":{"area":"4TA REGIDURIA"}},
+{"pk": "5","model": "Home.Area","fields":{"area":"5TA REGIDURIA"}},
+{"pk": "6","model": "Home.Area","fields":{"area":"COORDINACIÓN DE SALUD"}},
+{"pk": "7","model": "Home.Area","fields":{"area":"COORDINACIÓN DE COMUNICACIÓN SOCIAL Y RELACIONES PUBLICAS"}},
+{"pk": "8","model": "Home.Area","fields":{"area":"DIRECCIÓN DE OBRAS, ORDENAMIENTO TERRITORIAL Y SERVICIOS MUNICIPALES"}},
+{"pk": "9","model": "Home.Area","fields":{"area":"DIRECCIÓN DE FINANZAS"}},
+{"pk": "10","model": "Home.Area","fields":{"area":"SISTEMA DE AGUA Y SANEAMIENTO"}},
+{"pk": "11","model": "Home.Area","fields":{"area":"INSTITUTO DE PLANEACION Y DESARROLLO URBAN"}}
+]
