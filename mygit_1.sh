@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-git remote set-url origin https://github.com/HCarlos/SASOficialia.git
-git remote add origin https://github.com/HCarlos/SASOficialia.git
-# git remote set-url upstream https://github.com/HCarlos/SASOficialia.git
+git remote set-url origin https://github.com/HCarlos/RestFullAPISIAC.git
+git remote add origin https://github.com/HCarlos/RestFullAPISIAC.git
 
-#   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
+# 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
+
+# pwd : postg  =      R=D7,Z)$F%q,Kj?CP,DM{1CFNTtQ1B@4=V!d
+
 
 git config --global user.email "r0@tecnointel.mx"
 git config --global user.name "HCarlos"
@@ -16,27 +18,21 @@ git checkout main
 
 git status
 
-#git rm --cached /.env
 git rm -r --cached .csv
-git rm -r --cached sasoficial/settings.py
+git rm -r --cached RestFullAPI/settings.py
 git rm -r --cached settings.py
-git rm -r --cached sasoficial/configs/settings_production.py
+git rm -r --cached RestFullAPI/configs/settings_production.py
 git rm -r --cached settings_production.py
-git rm -r --cached sasoficial/configs/
+git rm -r --cached RestFullAPI/configs/
 
-git rm -r --cached proyecto/__pycache__/
-git rm -r --cached proyecto/migrations/__pycache__/
-git rm -r --cached proyecto/modelform/__pycache__/
-git rm -r --cached proyecto/reportes/__pycache__/
-git rm -r --cached proyecto/ajax/__pycache__/
 
-git rm -r --cached home/__pycache__/
-git rm -r --cached home/migrations/__pycache__/
+#git rm -r --cached home/__pycache__/
+#git rm -r --cached home/migrations/__pycache__/
 
-git rm -r --cached sasoficial/otros
-git rm -r --cached sasoficial/otros/
+git rm -r --cached RestFullAPI/otros
+git rm -r --cached RestFullAPI/otros/
 
-git rm -r --cached sasoficial/__pycache__/
+git rm -r --cached RestFullAPI/__pycache__/
 git rm -r --cached public/csv
 git rm -r --cached public/csv/
 git rm -r --cached .env
@@ -57,7 +53,7 @@ git rm -r --cached db.sqlite3
 
 git add .
 
-git commit -m "SASOficialia - V-1-0-18 | PDJ4.0 Beta"
+git commit -m "RestFullAPISIAC - V-1-0 | RestFullAPI-4.6 Beta"
 
 git push -u origin main --force
 
