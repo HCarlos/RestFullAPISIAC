@@ -124,6 +124,16 @@ class Area(models.Model):
 
 # ---------------------------------------------------------------------------------
 
+
+    # area = models.ForeignKey(
+    #     Area,
+    #     on_delete=models.SET_NULL,
+    #     blank=True,
+    #     null=True,
+    #     related_name='equipo_area'
+    # )
+
+
 # Catálogo de Marcas
 class Equipo(models.Model):
     TIPO_DISCO_DURO = [
@@ -131,27 +141,9 @@ class Equipo(models.Model):
         (2, 'SSD'),
     ]
     c030 = models.IntegerField(default=0, blank=False, null=False)
-    unidadadministrativa = models.ForeignKey(
-        UnidadAdministrativa,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name='equipo_unidadadministrativa'
-    )
-    area = models.ForeignKey(
-        Area,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name='equipo_area'
-    )
+    unidadadministrativa = models.ForeignKey(UnidadAdministrativa, on_delete=models.SET_NULL, null=True, related_name='equipo_ua')
     equipo = models.CharField(max_length=100, blank=False, null=False)
-    marca = models.ForeignKey(
-        Marca,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
+    marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True, related_name='equipo_marca')
     modelo = models.CharField(max_length=250, blank=False, null=False)
     procesador = models.CharField(max_length=250, blank=True, null=True)
     generacion = models.CharField(max_length=100, blank=True, null=True)
@@ -171,13 +163,7 @@ class Equipo(models.Model):
     antivirus = models.CharField(max_length=250, blank=True, null=True)
     ofimatica = models.CharField(max_length=250, blank=True, null=True)
     sistemaoperativo = models.CharField(max_length=250, blank=True, null=True)
-    empleadoresguardo = models.ForeignKey(
-        Empleado,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        related_name='equipo_empleadoresguardo'
-    )
+    empleadoresguardo = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name='equipo_empleadoresguardo')
     observaciones = models.TextField(blank=True, null=True)
     creado_por = models.ForeignKey(
         User,
@@ -209,8 +195,8 @@ class Equipo(models.Model):
             models.Index(fields=['inventarioteclado']),
             models.Index(fields=['tipodiscoduro']),
             models.Index(fields=['marca']),
-            models.Index(fields=['area']),
             models.Index(fields=['empleadoresguardo']),
+            models.Index(fields=['unidadadministrativa']),
         ]
         constraints = [
             models.UniqueConstraint(fields=['serie', 'inventario'], name="%(app_label)s_%(class)s_unique")
@@ -218,11 +204,11 @@ class Equipo(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
-        return reverse('area', args=[str(self.id)])
+        return reverse('equipo', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object."""
-        return '{0}, {1}, {2} : {3}, {4}'.format(self.equipo, self.marca, self.modelo, self.area, self.empleadoresguardo)
+        return '{0}, {1}, {2},  {3}'.format(self.equipo, self.marca, self.modelo, self.empleadoresguardo)
 
 
 

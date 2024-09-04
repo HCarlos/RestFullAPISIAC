@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
+from tenacity.retry import retry_if_result
 
 from Home.serializers import UserSerializer
 from django.contrib.auth.models import User
@@ -17,10 +18,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+from tenacity import retry, stop_after_attempt, wait_fixed
 
 def welcome(request):
     return render(request,'/')
 
+@retry(stop=stop_after_attempt(5), wait=wait_fixed(4), reraise=True)
 @api_view(['POST'])
 def login(request):
     user = get_object_or_404(User, username=request.data['username'])
@@ -50,6 +53,7 @@ def register(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@retry(retry=retry_if_result(lambda x: x is None))
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def profile(request):

@@ -6,7 +6,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 
 from Home.models import Empleado, Marca, UnidadAdministrativa, Area, Equipo
-from Home.serializers import UserSerializer, EmpleadoSerializer, MarcaSerializer, UnidadAdministrativaSerializer, AreaSerializer, EquipoSerializer
+from Home.serializers import UserSerializer, EmpleadoSerializer, MarcaSerializer, UnidadAdministrativaSerializer, \
+    AreaSerializer, EquipoSerializer, EquipoFullSerializer, UnidadAdministrativaFullSerializer
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
@@ -26,10 +27,17 @@ class MarcaViewSet(viewsets.ModelViewSet):
     serializer_class = MarcaSerializer
 
 @permission_classes([IsAuthenticated])
+class UnidadadministrativaFullViewSet(viewsets.ModelViewSet):
+    queryset = UnidadAdministrativa.objects.all().order_by('unidad')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UnidadAdministrativaFullSerializer
+
+@permission_classes([IsAuthenticated])
 class UnidadadministrativaViewSet(viewsets.ModelViewSet):
     queryset = UnidadAdministrativa.objects.all().order_by('unidad')
     # permission_classes = [permissions.IsAuthenticated]
     serializer_class = UnidadAdministrativaSerializer
+
 
 @permission_classes([IsAuthenticated])
 class AreaViewSet(viewsets.ModelViewSet):
@@ -43,3 +51,8 @@ class EquipoViewSet(viewsets.ModelViewSet):
     # permission_classes = [permissions.IsAuthenticated]
     serializer_class = EquipoSerializer
 
+@permission_classes([IsAuthenticated])
+class EquipoFullViewSet(viewsets.ModelViewSet):
+    queryset = Equipo.objects.all().order_by('equipo')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = EquipoFullSerializer
