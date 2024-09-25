@@ -1,4 +1,4 @@
-#!/home/carlos/Projects/Django/RestFullAPI/RestFullAPISIAC/venv/bin/python3
+#!/home/carlos/Projects/Django/RestFullAPI/RestFullAPISIAC/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

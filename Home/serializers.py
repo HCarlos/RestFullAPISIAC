@@ -96,24 +96,44 @@ class EquipoFullSerializer(WritableNestedModelSerializer, serializers.ModelSeria
     empleadoresguardo = EmpleadoSerializer(many=False, read_only=False)
     unidadadministrativa = UnidadAdministrativaSerializer(many=False, read_only=False)
     marca = MarcaSerializer(many=False, read_only=False)
-    equipo = UpperCaseSerializerField()
-    serie = UpperCaseSerializerField()
-    ofimatica = UpperCaseSerializerField()
+    equipo           = UpperCaseSerializerField()
+    serie            = UpperCaseSerializerField()
+    modelo           = UpperCaseSerializerField()
+    procesador       = UpperCaseSerializerField()
+    generacion       = UpperCaseSerializerField()
+    ram              = UpperCaseSerializerField()
+    discoduro        = UpperCaseSerializerField()
+    conexion         = UpperCaseSerializerField()
+    tiponodo         = UpperCaseSerializerField()
+    anchobanda       = UpperCaseSerializerField()
+    antivirus        = UpperCaseSerializerField()
+    sistemaoperativo = UpperCaseSerializerField()
+    ofimatica        = UpperCaseSerializerField()
     class Meta:
         model = Equipo
-        fields = ['id','c030','unidadadministrativa','equipo','marca','modelo','procesador',
+        fields = ['id','unidadadministrativa','equipo','marca','modelo','procesador',
                   'generacion','ram','discoduro','serie','inventario','inventariomonitor','inventariomouse',
                   'inventarioteclado','conexion','tiponodo','anchobanda','numerotelefonico','garantia','antivirus',
-                  'ofimatica','sistemaoperativo','empleadoresguardo']
+                  'ofimatica','sistemaoperativo','empleadoresguardo','observaciones']
 
 class EquipoSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
-    equipo = UpperCaseSerializerField()
-    serie = UpperCaseSerializerField()
-    ofimatica = UpperCaseSerializerField()
+    equipo           = UpperCaseSerializerField()
+    serie            = UpperCaseSerializerField()
+    modelo           = UpperCaseSerializerField()
+    procesador       = UpperCaseSerializerField()
+    generacion       = UpperCaseSerializerField()
+    ram              = UpperCaseSerializerField()
+    discoduro        = UpperCaseSerializerField()
+    conexion         = UpperCaseSerializerField()
+    tiponodo         = UpperCaseSerializerField()
+    anchobanda       = UpperCaseSerializerField()
+    antivirus        = UpperCaseSerializerField()
+    sistemaoperativo = UpperCaseSerializerField()
+    ofimatica        = UpperCaseSerializerField()
     class Meta:
         model = Equipo
-        fields = ['id','c030','unidadadministrativa','equipo','marca','modelo','procesador',
+        fields = ['id','unidadadministrativa','equipo','marca','modelo','procesador',
                   'generacion','ram','discoduro','serie','inventario','inventariomonitor','inventariomouse',
                   'inventarioteclado','conexion','tiponodo','anchobanda','numerotelefonico','garantia','antivirus',
-                  'ofimatica','sistemaoperativo','empleadoresguardo']
+                  'ofimatica','sistemaoperativo','empleadoresguardo','observaciones']
 
