@@ -1,11 +1,26 @@
 from __future__ import unicode_literals
 
+import os
+
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 import django.utils.timezone
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import  User
+from django.utils.translation import gettext_lazy as _
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from RestFullAPI import settings
+from RestFullAPI.settings import AUTH_USER_MODEL
+
+
+
+
+
 
 
 # ---------------------------------------------------------------------------------
@@ -245,5 +260,111 @@ class Area_Equipo(models.Model):
         """String for representing the Model object."""
         return '{0}, {1}, {2}.'.format(self.id, self.area, self.equipo)
 
+
+
+
+
+class Profile(models.Model):
+
+    GENERO = [
+        (1, 'Masculino'),
+        (0, 'Femenino'),
+    ]
+
+    ESTATUS = [
+        (1, 'Activo'),
+        (0, 'Inactivo'),
+    ]
+
+    # user = models.OneToOneField(
+    #     User,
+    #     on_delete=models.SET_NULL
+    # )
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, related_name='auth_user_profile',
+        on_delete=models.CASCADE, verbose_name=_("User")
+    )
+
+    ap_paterno = models.CharField(_("Apellido Paterno"), max_length=150, blank=True)
+    ap_materno = models.CharField(_("Apellido Materno"), max_length=150, blank=True)
+    nombre = models.CharField(_("Nombre"), max_length=150, blank=True)
+    curp = models.CharField(
+        _("CURP"),
+        max_length=18,
+        blank=True,
+        help_text=_('Se refiere a la CURP aplicada en México')
+    )
+
+    rfc = models.CharField(
+        _("RFC"),
+        max_length=13,
+        blank=True,
+        help_text=_('Se refiere al RFC aplicada por el SAT en México')
+    )
+
+    fecha_nacimiento = models.DateField(_("Fecha de Nacimiento"), default=timezone.now)
+    domicilio = models.TextField(_("Domicilio"), blank=True)
+
+    genero = models.SmallIntegerField(choices=GENERO, default=1, blank=True, null=True)
+    session = models.CharField(max_length=250, blank=True, null=True)
+    estatus = models.SmallIntegerField(choices=ESTATUS, default=1, blank=True, null=True)
+
+    avatar = models.ImageField(upload_to="profile/", blank=True, null=True)
+    avatar_datetime = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    bio = models.TextField(_("Biografía"), blank=True)
+    facebook = models.CharField(_("Facebook"), max_length=150, blank=True)
+    twitter = models.CharField(_("X"), max_length=150, blank=True)
+    linkedin = models.CharField(_("LinkedIn"), max_length=150, blank=True)
+    instagram = models.CharField(_("Instagram"), max_length=150, blank=True)
+    github = models.CharField(_("GitHub"), max_length=150, blank=True)
+    post = models.IntegerField(_("Post"), default=0, help_text=_("Elementos posteados"))
+    follower = models.IntegerField(_("Followers"), default=0, help_text=_("Segudores"))
+    folllowin = models.IntegerField(_("Followin"), default=0, help_text=_("Siguendo"))
+    creado_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='usuario_creado_por'
+    )
+    creado_el = models.DateTimeField(default=timezone.now)
+    modificado_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='usuario_modificado_por'
+    )
+    modidificado_el = models.DateTimeField(default=timezone.now)
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_profile(sender, instance, **kwargs):
+        instance.profile.save()
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('user-view', kwargs={'pk': self.pk} )
+
+
+    def Foto(self):
+        archivo = 'media/{0}'.format(self.avatar)
+        existe = os.path.isfile(archivo)
+        if existe:
+            return '/' + str(archivo)
+        else:
+            return '/static/images/web/empty_user_male.png' if self.genero == 1 else '/static/images/web/empty_user_female.png'
+
+    def __str__(self):
+        return self.user.username
+
+    def get_id(self):
+        return self.id
 
 

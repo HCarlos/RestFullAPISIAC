@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from tenacity.retry import retry_if_result
 
-from Home.serializers import UserSerializer
+from Home.serializers import UserSerializer, ProfileSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework import status
@@ -59,7 +59,7 @@ def register(request):
 def profile(request):
     # print(request.user)
     # permission_classes(IsAuthenticated,)
-    serializer = UserSerializer(instance=request.user)
+    serializer = ProfileSerializer(instance=request.user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 # @api_view(['POST'])

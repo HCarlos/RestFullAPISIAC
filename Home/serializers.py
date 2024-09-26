@@ -3,7 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from drf_writable_nested import WritableNestedModelSerializer
 
-from Home.models import Empleado, Marca, UnidadAdministrativa, Area, Equipo
+from Home.models import Empleado, Marca, UnidadAdministrativa, Area, Equipo, User, Profile
+
 
 class UpperCaseSerializerField(serializers.CharField):
 
@@ -16,9 +17,25 @@ class UpperCaseSerializerField(serializers.CharField):
             return value.upper()
 
 
+class UserSerializer(serializers.ModelSerializer):
+    first_name = UpperCaseSerializerField()
+    last_name = UpperCaseSerializerField()
+    def get_full_name(self, obj):
+        return obj.first_name + ' ' + obj.last_name
+
+    def get_short_name(self, obj):
+        return obj.first_name
+
+    class Meta:
+        model = User
+        fields = [
+                    'id','username','email','first_name','last_name',
+                    ]
+
+
 
 # User serial #
-class UserSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField('get_full_name')
     short_name = serializers.SerializerMethodField('get_short_name')
     first_name = UpperCaseSerializerField()
@@ -34,10 +51,12 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.name + ' ' + obj.first_name
 
     class Meta:
-        model = User
+        model = Profile
         fields = ['id','username','email','first_name','last_name','name',
                   'curp','rfc','domicilio','bio','fecha_nacimiento','full_name','short_name',
                   'facebook','twitter','linkedin','instagram','github','post','follower','folllowin']
+
+
 
 # Empleado serial
 class EmpleadoSerializer(serializers.ModelSerializer):
