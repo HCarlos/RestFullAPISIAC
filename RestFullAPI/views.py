@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as auth_logout
 from tenacity.retry import retry_if_result
 
+from Home.models import Profile
 from Home.serializers import UserSerializer, ProfileSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
@@ -23,7 +24,7 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 def welcome(request):
     return render(request,'/')
 
-@retry(stop=stop_after_attempt(5), wait=wait_fixed(4), reraise=True)
+# @retry(stop=stop_after_attempt(5), wait=wait_fixed(4), reraise=True)
 @api_view(['POST'])
 def login(request):
     user = get_object_or_404(User, username=request.data['username'])
@@ -32,9 +33,12 @@ def login(request):
         return Response({'error': 'Username o Password no válidos'}, status=status.HTTP_400_BAD_REQUEST)
 
     token, created = Token.objects.get_or_create(user=user)
-    serializer = UserSerializer(instance=user)
 
-    return Response({'token': token.key, "user": serializer.data},status=status.HTTP_200_OK)
+    serializer = UserSerializer(instance=user)
+    prof = Profile.objects.get(user=user)
+    serializer_profile = ProfileSerializer(instance=prof)
+
+    return Response({'token': token.key, "profile": serializer_profile.data},status=status.HTTP_200_OK)
 
 # @api_view(['POST'])
 def register(request):
@@ -59,7 +63,11 @@ def register(request):
 def profile(request):
     # print(request.user)
     # permission_classes(IsAuthenticated,)
-    serializer = ProfileSerializer(instance=request.user)
+    usuario = User.objects.get(username=request.user.username)
+    # print(usuario)
+    perfil = Profile.objects.get(user=usuario)
+    print(perfil)
+    serializer = ProfileSerializer(instance=perfil)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 # @api_view(['POST'])

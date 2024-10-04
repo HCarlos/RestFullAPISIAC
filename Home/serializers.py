@@ -18,45 +18,37 @@ class UpperCaseSerializerField(serializers.CharField):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    first_name = UpperCaseSerializerField()
-    last_name = UpperCaseSerializerField()
-    def get_full_name(self, obj):
-        return obj.first_name + ' ' + obj.last_name
-
-    def get_short_name(self, obj):
-        return obj.first_name
+    # first_name = UpperCaseSerializerField()
+    # last_name = UpperCaseSerializerField()
+    # def get_full_name(self, obj):
+    #     return obj.first_name + ' ' + obj.last_name
+    #
+    # def get_short_name(self, obj):
+    #     return obj.first_name
 
     class Meta:
         model = User
         fields = [
-                    'id','username','email','first_name','last_name',
-                    ]
+                    'id','username','email','first_name','last_name'
+                ]
 
 
 
 # User serial #
 class ProfileSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField('get_full_name')
-    short_name = serializers.SerializerMethodField('get_short_name')
-    first_name = UpperCaseSerializerField()
-    last_name = UpperCaseSerializerField()
-    name = UpperCaseSerializerField()
+    # full_name_profile = serializers.SerializerMethodField('get_full_name_profile')
+    # short_name_profile = serializers.SerializerMethodField('get_short_name_profile')
+    user = UserSerializer(many=False, read_only=False)
     curp = UpperCaseSerializerField()
     rfc = UpperCaseSerializerField()
     domicilio = UpperCaseSerializerField()
-    def get_full_name(self, obj):
-        return obj.first_name + ' ' + obj.last_name + ' ' + obj.name
-
-    def get_short_name(self, obj):
-        return obj.name + ' ' + obj.first_name
 
     class Meta:
         model = Profile
-        fields = ['id','username','email','first_name','last_name','name',
-                  'curp','rfc','domicilio','bio','fecha_nacimiento','full_name','short_name',
-                  'facebook','twitter','linkedin','instagram','github','post','follower','folllowin']
-
-
+        fields = ['id','ap_paterno','ap_materno','nombre','curp',
+                  'rfc','domicilio','bio','fecha_nacimiento','genero','avatar',
+                  'facebook','twitter','linkedin','instagram','github','post','follower','folllowin','user'
+                  ]
 
 # Empleado serial
 class EmpleadoSerializer(serializers.ModelSerializer):
