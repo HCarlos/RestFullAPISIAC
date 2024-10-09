@@ -1,13 +1,16 @@
 
 from rest_framework import viewsets, permissions
 
-from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
-from rest_framework import status
+# from django.contrib.auth.models import User
+# from rest_framework.authtoken.models import Token
+# from rest_framework import status
 
-from Home.models import Empleado, Marca, UnidadAdministrativa, Area, Equipo
+from Home.models import Empleado, Marca, UnidadAdministrativa, Area, Equipo, Subarea, Categoria_de_equipo, Modelo, \
+    Color, Condicion, Fuente_de_financiamiento
 from Home.serializers import UserSerializer, EmpleadoSerializer, MarcaSerializer, UnidadAdministrativaSerializer, \
-    AreaSerializer, EquipoSerializer, EquipoFullSerializer, UnidadAdministrativaFullSerializer
+    AreaSerializer, EquipoSerializer, EquipoFullSerializer, UnidadAdministrativaFullSerializer, SubareaSerializer, \
+    CategoriaDeEquipoSerializer, ModeloSerializer, ColorSerializer, CondicionSerializer, \
+    FuenteDeFinanciamientoSerializer
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
@@ -44,6 +47,42 @@ class AreaViewSet(viewsets.ModelViewSet):
     queryset = Area.objects.all().order_by('area')
     # permission_classes = [permissions.IsAuthenticated]
     serializer_class = AreaSerializer
+
+@permission_classes([IsAuthenticated])
+class SubareaViewSet(viewsets.ModelViewSet):
+    queryset = Subarea.objects.all().order_by('subarea')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SubareaSerializer
+
+@permission_classes([IsAuthenticated])
+class CategoriaDeEquipoViewSet(viewsets.ModelViewSet):
+    queryset = Categoria_de_equipo.objects.all().order_by('categoria')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CategoriaDeEquipoSerializer
+
+@permission_classes([IsAuthenticated])
+class ModeloViewSet(viewsets.ModelViewSet):
+    queryset = Modelo.objects.all().order_by('modelo')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ModeloSerializer
+
+@permission_classes([IsAuthenticated])
+class ColorViewSet(viewsets.ModelViewSet):
+    queryset = Color.objects.all().order_by('color')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ColorSerializer
+
+@permission_classes([IsAuthenticated])
+class CondicionViewSet(viewsets.ModelViewSet):
+    queryset = Condicion.objects.all().order_by('condicion')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CondicionSerializer
+
+@permission_classes([IsAuthenticated])
+class FuenteDeFinanciamientoViewSet(viewsets.ModelViewSet):
+    queryset = Fuente_de_financiamiento.objects.all().order_by('fuente_de_financiamiento')
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = FuenteDeFinanciamientoSerializer
 
 @permission_classes([IsAuthenticated])
 class EquipoViewSet(viewsets.ModelViewSet):

@@ -66,7 +66,7 @@ def profile(request):
     usuario = User.objects.get(username=request.user.username)
     # print(usuario)
     perfil = Profile.objects.get(user=usuario)
-    print(perfil)
+    # print(perfil)
     serializer = ProfileSerializer(instance=perfil)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

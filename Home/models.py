@@ -15,13 +15,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from RestFullAPI import settings
-from RestFullAPI.settings import AUTH_USER_MODEL
-
-
-
-
-
-
 
 # ---------------------------------------------------------------------------------
 
@@ -103,15 +96,9 @@ class UnidadAdministrativa(models.Model):
 
 # ---------------------------------------------------------------------------------
 
-# Catálogo de Marcas
+# Catálogo de Areas
 class Area(models.Model):
     area = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
-    titular = models.ForeignKey(
-        Empleado,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='area_titular'
-    )
     unidadadministrativa = models.ForeignKey(
         UnidadAdministrativa,
         on_delete=models.SET_NULL,
@@ -137,20 +124,167 @@ class Area(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return '{0}, {1}, {2}'.format(self.area, self.unidadadministrativa, self.titular)
+        return '{0}, {1}'.format(self.area, self.unidadadministrativa)
+
+
+# Catálogo de SubAreas
+class Subarea(models.Model):
+    subarea = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
+    area = models.ForeignKey(
+        Area,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    modi_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='subarea_modi_por')
+    modi_el = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Subarea'
+        verbose_name_plural = 'Subareas'
+        ordering = ['subarea']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('area', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return '{0}, {1}'.format(self.subarea, self.area)
+
+
+# Catálogo de Categoria de Equipos
+class Categoria_de_equipo(models.Model):
+    categoria = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
+    modi_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='categoria_de_equipos_modi_por')
+    modi_el = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Categoria de equipo'
+        verbose_name_plural = 'Categoria de equipos'
+        ordering = ['categoria']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('categoria', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return '{0}'.format(self.categoria)
+
+
+# Catálogo de Modelos
+class Modelo(models.Model):
+    modelo = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
+    modi_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='modelo_de_equipos_modi_por')
+    modi_el = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Modelo'
+        verbose_name_plural = 'Modelos'
+        ordering = ['modelo']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('modelo', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return '{0}'.format(self.modelo)
+
+
+# Catálogo de Colores
+class Color(models.Model):
+    color = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
+    modi_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='color_de_equipos_modi_por')
+    modi_el = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Color'
+        verbose_name_plural = 'Colores'
+        ordering = ['color']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('color', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return '{0}'.format(self.color)
+
+
+# Catálogo de Condiciones
+class Condicion(models.Model):
+    condicion = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
+    modi_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='condicion_de_equipos_modi_por')
+    modi_el = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Condicion'
+        verbose_name_plural = 'Condiciones'
+        ordering = ['condicion']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('condicion', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return '{0}'.format(self.condicion)
+
+
+# Catálogo de Fuente de Financiamiento
+class Fuente_de_financiamiento(models.Model):
+    fuente_de_financiamiento = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
+    modi_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='fuente_de_financiamiento_de_equipos_modi_por')
+    modi_el = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
+
+    class Meta:
+        verbose_name = ('Fuente de financiamiento')
+        verbose_name_plural = 'Fuente de financiamientos'
+        ordering = ['fuente_de_financiamiento']
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('fuente_de_financiamiento', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return '{0}'.format(self.fuente_de_financiamiento)
 
 
 
 # ---------------------------------------------------------------------------------
-
-
-    # area = models.ForeignKey(
-    #     Area,
-    #     on_delete=models.SET_NULL,
-    #     blank=True,
-    #     null=True,
-    #     related_name='equipo_area'
-    # )
 
 
 # Catálogo de Marcas
