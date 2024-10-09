@@ -73,7 +73,7 @@ class Ticket_Imagen(models.Model):
 
     class Meta:
         verbose_name = 'Ticket_Respuesta'
-        verbose_name_plural = 'Respuesta a los Tickets'
+        verbose_name_plural = 'Imagenes de los Tickets'
         ordering = ['fecha', 'descripcion_imagen']
 
     def __str__(self):
