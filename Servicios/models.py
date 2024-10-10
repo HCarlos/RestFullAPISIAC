@@ -100,11 +100,20 @@ class Ticket_Imagen(models.Model):
 
 
 class Ticket_Respuesta(models.Model):
+    TIPO_DE_ESTATUS = [
+        (1, 'Recibido'),
+        (2, 'En proceso'),
+        (3, 'En espera de aprobación'),
+        (4, 'En espera de meterial/refacciones'),
+        (5, 'En garantía'),
+        (6, 'Terminado'),
+    ]
+
     ticket = models.ForeignKey(Ticket, on_delete=models.SET_NULL, null=True, related_name='ticket_respuesta_ticket')
     fecha = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
     respuesta = models.TextField(blank=False, name=False, default="")
     usuario_respuesta = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='ticket_usuario_respuesta')
-
+    estatus = models.SmallIntegerField(choices=TIPO_DE_ESTATUS, default=1, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now_add=True)
 
