@@ -49,7 +49,7 @@ class Ticket(models.Model):
         ordering = ['fecha','asunto']
 
     def __str__(self):
-        return'{0} {1} {2}'.format(self.id, self.fecha, self.asunto, self.unidad_administrativa_solicitante.abreviatura)
+        return'{0} {1} {2}'.format(self.id, self.fecha, self.asunto)
 
     @property
     def get_id(self):
