@@ -67,10 +67,10 @@ class Marca(models.Model):
 
 # ---------------------------------------------------------------------------------
 
-# Catálogo de Marcas
+# Catálogo de Unidad Administrativa
 class UnidadAdministrativa(models.Model):
-    unidad = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
-    abreviatura = models.CharField(max_length=25, unique=True, db_index=True, blank=False, null=False)
+    unidad = models.CharField(max_length=250, unique=True, blank=False, null=False)
+    abreviatura = models.CharField(max_length=25, unique=True, blank=False, null=False)
     titular = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name='unidadadministrativa_titular')
     modi_por = models.ForeignKey(
         User,
@@ -81,24 +81,30 @@ class UnidadAdministrativa(models.Model):
     modi_el = models.DateTimeField(default=django.utils.timezone.now, blank=True, null=True)
 
     class Meta:
-        verbose_name = 'UnidadAdministrativa'
-        verbose_name_plural = 'UnidadesAdministrativas'
+        verbose_name = 'Unidad Administrativa'
+        verbose_name_plural = 'Unidades Administrativas'
         ordering = ['unidad']
 
-    def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('unidad-administrativa', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object."""
         return '{0} - {1}.'.format(self.unidad, self.abreviatura)
+
+    @property
+    def get_abrev(self):
+        return self.abreviatura
+
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular author instance."""
+        return reverse('unidad-administrativa', args=[str(self.id)])
 
 
 # ---------------------------------------------------------------------------------
 
 # Catálogo de Areas
 class Area(models.Model):
-    area = models.CharField(max_length=250, unique=True, db_index=True, blank=False, null=False)
+    area = models.CharField(max_length=250, unique=False, db_index=True, blank=False, null=False)
     unidadadministrativa = models.ForeignKey(
         UnidadAdministrativa,
         on_delete=models.SET_NULL,
