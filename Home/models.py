@@ -15,6 +15,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from RestFullAPI import settings
+from Servicios.functions import file_size, validate_file_extension
+
 
 # ---------------------------------------------------------------------------------
 
@@ -71,7 +73,7 @@ class Marca(models.Model):
 class UnidadAdministrativa(models.Model):
     unidad = models.CharField(max_length=250, unique=True, blank=False, null=False)
     abreviatura = models.CharField(max_length=25, unique=True, blank=False, null=False)
-    titular = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name='unidadadministrativa_titular')
+    titular = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='unidadadministrativa_titular')
     modi_por = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -416,11 +418,6 @@ class Profile(models.Model):
         (0, 'Inactivo'),
     ]
 
-    # user = models.OneToOneField(
-    #     User,
-    #     on_delete=models.SET_NULL
-    # )
-
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, related_name='auth_user_profile',
         on_delete=models.CASCADE, verbose_name=_("User")
@@ -450,7 +447,7 @@ class Profile(models.Model):
     session = models.CharField(max_length=250, blank=True, null=True)
     estatus = models.SmallIntegerField(choices=ESTATUS, default=1, blank=True, null=True)
 
-    avatar = models.ImageField(upload_to="profile/", blank=True, null=True)
+    avatar = models.ImageField(upload_to="profile/", blank=True, null=True, validators=[validate_file_extension,file_size])
     avatar_datetime = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     bio = models.TextField(_("Biografía"), blank=True)
@@ -462,6 +459,13 @@ class Profile(models.Model):
     post = models.IntegerField(_("Post"), default=0, help_text=_("Elementos posteados"))
     follower = models.IntegerField(_("Followers"), default=0, help_text=_("Segudores"))
     folllowin = models.IntegerField(_("Followin"), default=0, help_text=_("Siguendo"))
+    unidad_administrativa = models.ForeignKey(
+        UnidadAdministrativa,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='usuario_unidad_administrativa'
+    )
     creado_por = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -499,12 +503,27 @@ class Profile(models.Model):
         if existe:
             return '/' + str(archivo)
         else:
-            return '/static/images/web/empty_user_male.png' if self.genero == 1 else '/static/images/web/empty_user_female.png'
+            return '/media/images/web/empty_user_male.png' if self.genero == 1 else '/media/images/web/empty_user_female.png'
 
     def __str__(self):
         return self.user.username
 
     def get_id(self):
         return self.id
+
+    @property
+    def get_id(self):
+        return self.id
+
+    @property
+    def full_name(self):
+        return "{0} {1} {2}".format(self.ap_paterno,self.ap_materno,self.nombre)
+
+    # @full_name.setter
+    # def full_name(self, value):
+    #      names = value.split(' ')
+    #      self.ap_paterno = names[0]
+    #      self.ap_materno = names[1]
+    #      self.nombre = names[2]
 
 
